@@ -20,6 +20,7 @@
 	let showPopup = false;
 	let showDomainMessage = false;
 	let gifLink = 'https://i.imgur.com/HKfCPnh.gif';
+	let showRamWarning = false;
 
 	// Configuration constants
 	const versions = config.versions;
@@ -53,6 +54,23 @@
 		} else {
 			selectedApts = [...selectedApts, aptName.toLowerCase()];
 		}
+	}
+
+	// RAM validation function
+	function validateRam() {
+		const minRam = type === 'site' ? 512 : 100;
+		if (ram < minRam) {
+			ram = minRam; // Set RAM to the minimum allowed value
+			showRamWarning = true;
+			setTimeout(() => (showRamWarning = false), 3000); // Hide warning after 3 seconds
+		}
+	}
+
+	// Set minimum RAM based on application type
+	function handleTypeChange() {
+		const minRam = type === 'site' ? 512 : 100;
+		ram = minRam;
+		showRamWarning = false;
 	}
 
 	// Form validation
@@ -168,6 +186,7 @@
 					<label for="type" class="block text-sm font-semibold">Tipo de aplicação</label>
 					<select
 						bind:value={type}
+						on:change={handleTypeChange}
 						class="bg-background-alt text-text-color border-gray mt-1 w-full cursor-pointer rounded-md border p-2"
 					>
 						<option value="bot">Bot</option>
@@ -265,8 +284,16 @@
 							bind:value={ram}
 							min="100"
 							class="bg-background-alt text-text-color border-gray mt-1 w-full rounded-md border p-2"
+							on:blur={validateRam}
 							required
 						/>
+						{#if showRamWarning}
+							<p class="text-alt-pink mt-1 text-xs">
+								{type === 'site'
+									? 'Valor mínimo de RAM para sites é 512 MB.'
+									: 'Valor mínimo de RAM é 100 MB.'}
+							</p>
+						{/if}
 					</div>
 					<div class="flex-1">
 						<label for="autorestart" class="text-gray mb-1 block text-sm font-semibold">
