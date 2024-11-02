@@ -1,0 +1,12 @@
+node_modules
+package-lock.json
+
+# Output
+.svelte-kit
+
+# Svelte
+.prettierrc
+.prettierignore
+
+# Node.js output (to be ignored and not reconfigure the port)
+./build/index.js

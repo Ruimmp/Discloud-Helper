@@ -1,0 +1,9 @@
+node_modules
+package-lock.json
+
+# Output
+.svelte-kit
+build
+
+# OS
+.DS_Store

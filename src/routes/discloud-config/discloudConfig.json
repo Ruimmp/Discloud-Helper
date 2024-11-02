@@ -1,0 +1,26 @@
+{
+	"versions": {
+		"nodejs": ["latest", "current", "18", "16.13.2", "14.18.3", "suja"],
+		"python": ["latest", "3.10", "3.9.10", "2.7.18", "suja"],
+		"java": ["latest", "18.x.x", "17.x.x", "16.x.x"],
+		"ruby": ["latest", "3.1.0", "2.7.5"],
+		"go": ["latest", "1.17.6", "1.16.13"],
+		"php": ["latest"],
+		"rust": ["latest", "suja"]
+	},
+	"apts": [
+		{
+			"name": "Canvas",
+			"dependencies": "libcairo2, libpango1.0-dev, libjpeg-dev, libgif-dev, librsvg2-dev, libgbm-dev"
+		},
+		{
+			"name": "Puppeteer",
+			"dependencies": "libglib2.0-0, libnss3, libatk1.0-0, libatk-bridge2.0-0, libcups2, libdrm2, libxcomposite1, libxdamage1, libxfixes3, libxrandr2, libgbm1, libxkbcommon0, libpango1.0-0, libcairo2, libasound2, libgtk-3-0, libxshmfence-dev, libdrm-dev, libgbm-dev, libx11-xcb-dev"
+		},
+		{ "name": "Java", "dependencies": "default-jre" },
+		{ "name": "FFmpeg", "dependencies": "ffmpeg" },
+		{ "name": "LibGL", "dependencies": "libsm6, libxext6" },
+		{ "name": "Tools", "dependencies": "curl, git, wget, make, cmake" },
+		{ "name": "OpenSSL", "dependencies": "pkg-config, libssl-dev" }
+	]
+}
