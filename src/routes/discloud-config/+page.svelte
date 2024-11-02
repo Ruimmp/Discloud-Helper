@@ -8,7 +8,7 @@
 	let name = '';
 	let avatar = '';
 	let main = '';
-	let ram = 100;
+	let ram = config.defaults.minRam.bot;
 	let autorestart = false;
 	let version = '';
 	let id = '';
@@ -19,109 +19,81 @@
 	let avatarError = '';
 	let showPopup = false;
 	let showDomainMessage = false;
-	let gifLink = 'https://i.imgur.com/HKfCPnh.gif';
 	let showRamWarning = false;
+	let previewGifLink = 'https://i.imgur.com/HKfCPnh.gif';
 
-	// Configuration constants
 	const versions = config.versions;
 	const aptsOptions = config.apts;
-	const fileExtensions = {
-		'.js': 'nodejs',
-		'.mjs': 'nodejs',
-		'.py': 'python',
-		'.jar': 'java',
-		'.rb': 'ruby',
-		'.go': 'go',
-		'.php': 'php',
-		'.rs': 'rust'
-	};
-
-	// Check for "discloud.app" when input is blurred (focus is lost)
-	function handleIdBlur() {
-		const normalizedId = id.toLowerCase().replace(/\.?discloud\.app/, '');
-		if (id !== normalizedId) {
-			id = normalizedId;
-			showDomainMessage = true;
-		} else {
-			showDomainMessage = false;
-		}
-	}
-
-	// Toggle APT packages
-	function toggleApt(aptName) {
-		if (selectedApts.includes(aptName.toLowerCase())) {
-			selectedApts = selectedApts.filter((a) => a !== aptName.toLowerCase());
-		} else {
-			selectedApts = [...selectedApts, aptName.toLowerCase()];
-		}
-	}
-
-	// RAM validation function
-	function validateRam() {
-		const minRam = type === 'site' ? 512 : 100;
-		if (ram < minRam) {
-			ram = minRam; // Set RAM to the minimum allowed value
-			showRamWarning = true;
-			setTimeout(() => (showRamWarning = false), 3000); // Hide warning after 3 seconds
-		}
-	}
+	const fileExtensions = config.fileExtensions;
 
 	// Set minimum RAM based on application type
 	function handleTypeChange() {
-		const minRam = type === 'site' ? 512 : 100;
+		const minRam = type === 'site' ? config.defaults.minRam.site : config.defaults.minRam.bot;
 		ram = minRam;
 		showRamWarning = false;
 	}
 
-	// Form validation
-	$: isFormValid =
-		name &&
-		main &&
-		ram >= 100 &&
-		(type === 'bot' || (type === 'site' && id)) &&
-		!mainFileError &&
-		!avatarError;
+	// Check for "discloud.app" when input is blurred (focus is lost)
+	function handleIdBlur() {
+		const normalizedId = id.toLowerCase().replace(/\.?discloud\.app/, '');
+		showDomainMessage = id !== normalizedId;
+		id = normalizedId;
+	}
 
-	// Update language and available versions based on the main file extension
-	$: {
+	// Toggle APT packages
+	function toggleApt(aptName) {
+		const lowerApt = aptName.toLowerCase();
+		selectedApts = selectedApts.includes(lowerApt)
+			? selectedApts.filter((a) => a !== lowerApt)
+			: [...selectedApts, lowerApt];
+	}
+
+	// RAM validation function
+	function validateRam() {
+		const minRam = type === 'site' ? config.defaults.minRam.site : config.defaults.minRam.bot;
+		if (ram < minRam) {
+			ram = minRam;
+			showRamWarning = true;
+			setTimeout(() => (showRamWarning = false), 3000);
+		}
+	}
+
+	// Validate main file based on language requirements
+	function validateMainFile() {
 		const ext = main.slice(main.lastIndexOf('.'));
 		language = fileExtensions[ext] || '';
-		// svelte-ignore reactive_declaration_non_reactive_property
-		// I just ignored it because it's working and we shouldn't touch what is working 😊
-		availableVersions = language ? versions[language] || [] : [];
+		mainFileError = '';
 
-		// Check for correct .jar file naming for Java
-		const jarFilePattern = /^[a-zA-Z0-9]+\.jar$/; // Only allows alphanumeric names without special characters except .jar
-		if (language === 'java') {
+		if (ext === '.java') {
+			mainFileError = 'Projetos em Java devem ser compilados em um arquivo .jar.';
+		} else if (language === 'java') {
+			const jarFilePattern = /^[a-zA-Z0-9]+\.jar$/;
 			if (ext !== '.jar') {
-				mainFileError = 'Para aplicações Java, o arquivo principal deve ser um .jar, não um .java.';
+				mainFileError = 'Projetos em Java devem ser compilados em um arquivo .jar.';
 			} else if (!jarFilePattern.test(main)) {
-				mainFileError = 'Nome inválido. Use apenas letras (ex: app.jar).';
-			} else {
-				mainFileError = ''; // Clear error if the name is valid
+				mainFileError = 'Nome inválido. Use apenas letras e números (ex: app.jar).';
 			}
 		} else if (main && !language) {
-			mainFileError =
-				'Tipo de arquivo inválido. Por favor, insira um arquivo com uma extensão válida.';
-		} else {
-			mainFileError = ''; // Clear error if file is valid
+			mainFileError = 'Tipo de arquivo inválido. Por favor, use uma extensão válida.';
 		}
+	}
 
-		// Set default version if available
-		if (language && availableVersions.length > 0 && !version) {
-			version = availableVersions[0];
-		} else if (!main) {
-			version = ''; // Clear version if main file is empty
-		}
+	// Set available versions based on detected language
+	function setAvailableVersions() {
+		availableVersions = language ? versions[language] || [] : [];
+		if (language && availableVersions.length > 0 && !version) version = availableVersions[0];
+		else if (!main) version = '';
+	}
 
-		// Avatar URL validation with examples
+	// Validate avatar URL
+	function validateAvatarUrl() {
 		avatarError =
-			avatar && !/^(https?:\/\/[^\s]+(\.png|\.jpg|\.jpeg))$/i.test(avatar)
+			avatar && !/^(https?:\/\/[^\s]+(\.png|\.jpg|\.jpeg)(\?.*)?)$/i.test(avatar)
 				? 'A URL do avatar deve ser válida e terminar com .png, .jpg ou .jpeg. Ex: https://i.imgur.com/zVC0jHl.png'
 				: '';
 	}
 
-	// Generate preview content without empty lines
+	// Generate config preview
 	$: configPreview = [
 		name ? `NAME=${name}` : null,
 		avatar && !avatarError ? `AVATAR=${avatar}` : null,
@@ -145,14 +117,23 @@
 		link.click();
 		URL.revokeObjectURL(link.href);
 
-		// Show pop-up after download
 		showPopup = true;
 	}
 
-	// Close pop-up function
-	function closePopup() {
-		showPopup = false;
+	// Reactive Updates
+	$: {
+		validateMainFile();
+		setAvailableVersions();
+		validateAvatarUrl();
 	}
+
+	$: isFormValid =
+		name &&
+		main &&
+		ram >= 100 &&
+		(type === 'bot' || (type === 'site' && id)) &&
+		!mainFileError &&
+		!avatarError;
 </script>
 
 <svelte:head>
@@ -207,10 +188,11 @@
 				</div>
 
 				<div>
-					<label for="avatar" class="text-gray block text-sm font-semibold"> Avatar URL </label>
+					<label for="avatar" class="text-gray block text-sm font-semibold">Avatar URL</label>
 					<input
 						bind:value={avatar}
 						placeholder="URL da Imagem do Avatar"
+						on:blur={validateAvatarUrl}
 						class="bg-background-alt text-text-color border-gray mt-1 w-full rounded-md border p-2"
 					/>
 					{#if avatarError}
@@ -246,6 +228,10 @@
 					<input
 						bind:value={main}
 						placeholder="Ex: index.js ou src/index.js"
+						on:blur={() => {
+							validateMainFile();
+							setAvailableVersions();
+						}}
 						class="bg-background-alt text-text-color border-gray mt-1 w-full rounded-md border p-2"
 						required
 					/>
@@ -282,9 +268,8 @@
 						<input
 							type="number"
 							bind:value={ram}
-							min="100"
-							class="bg-background-alt text-text-color border-gray mt-1 w-full rounded-md border p-2"
 							on:blur={validateRam}
+							class="bg-background-alt text-text-color border-gray mt-1 w-full rounded-md border p-2"
 							required
 						/>
 						{#if showRamWarning}
@@ -413,9 +398,9 @@
 		<div class="init-popup">
 			<h2>Informações Importantes</h2>
 			<p>Coloque o arquivo <strong>discloud.config</strong> na raiz da aplicação.</p>
-			{#if gifLink}
+			{#if previewGifLink}
 				<div>
-					<img src={gifLink} alt="GIF explicativo" />
+					<img src={previewGifLink} alt="GIF explicativo" />
 				</div>
 			{/if}
 			<button on:click={closePopup} class="button">OK!</button>

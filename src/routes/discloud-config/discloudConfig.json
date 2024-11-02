@@ -1,4 +1,10 @@
 {
+	"defaults": {
+		"minRam": {
+			"site": 512,
+			"bot": 100
+		}
+	},
 	"versions": {
 		"nodejs": ["latest", "current", "18", "16.13.2", "14.18.3", "suja"],
 		"python": ["latest", "3.10", "3.9.10", "2.7.18", "suja"],
@@ -22,5 +28,15 @@
 		{ "name": "LibGL", "dependencies": "libsm6, libxext6" },
 		{ "name": "Tools", "dependencies": "curl, git, wget, make, cmake" },
 		{ "name": "OpenSSL", "dependencies": "pkg-config, libssl-dev" }
-	]
+	],
+	"fileExtensions": {
+		".js": "nodejs",
+		".mjs": "nodejs",
+		".py": "python",
+		".jar": "java",
+		".rb": "ruby",
+		".go": "go",
+		".php": "php",
+		".rs": "rust"
+	}
 }
