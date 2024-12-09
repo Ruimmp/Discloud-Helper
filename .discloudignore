@@ -1,12 +1,39 @@
+# Node.js
 node_modules
 package-lock.json
 
 # Output
 .svelte-kit
 
-# Svelte
+# Prettier
 .prettierrc
 .prettierignore
 
 # Node.js output (to be ignored and not reconfigure the port)
 ./build/index.js
+
+# SvelteKit
+./.svelte-kit*
+svelte.config.js
+
+# Documentation
+README.md
+
+# Unnecessary files
+./src*
+./static*
+
+# GitHub
+.github*
+.gitignore
+LICENSE
+
+# NPM
+.npmrc
+
+# Tailwind CSS
+postcss.config.js
+tailwind.config.js
+
+# Vite
+vite.config.js

@@ -1,4 +1,5 @@
 {
+	"appTypes": ["bot", "site"],
 	"defaults": {
 		"minRam": {
 			"site": 512,
@@ -15,6 +16,7 @@
 		"rust": ["latest", "suja"]
 	},
 	"apts": [
+		{ "name": "Tools", "dependencies": "curl, git, wget, make, cmake" },
 		{
 			"name": "Canvas",
 			"dependencies": "libcairo2, libpango1.0-dev, libjpeg-dev, libgif-dev, librsvg2-dev, libgbm-dev"
@@ -26,7 +28,6 @@
 		{ "name": "Java", "dependencies": "default-jre" },
 		{ "name": "FFmpeg", "dependencies": "ffmpeg" },
 		{ "name": "LibGL", "dependencies": "libsm6, libxext6" },
-		{ "name": "Tools", "dependencies": "curl, git, wget, make, cmake" },
 		{ "name": "OpenSSL", "dependencies": "pkg-config, libssl-dev" }
 	],
 	"fileExtensions": {
