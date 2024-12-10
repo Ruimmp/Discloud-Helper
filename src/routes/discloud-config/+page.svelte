@@ -3,7 +3,7 @@
 	import config from './discloudConfig.json';
 
 	// Variables for form fields
-	let type = 'site';
+	let type = 'bot';
 	let name = '';
 	let main = '';
 	let avatar = '';
