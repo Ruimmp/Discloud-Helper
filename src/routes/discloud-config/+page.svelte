@@ -3,7 +3,7 @@
 	import config from './discloudConfig.json';
 
 	// Variables for form fields
-	let type = 'bot';
+	let type = 'site';
 	let name = '';
 	let main = '';
 	let avatar = '';
@@ -18,7 +18,9 @@
 	// Config preview
 	let copyButtonText = $t.discloudConfig.form.copyButton;
 
-	// Error message for form fields
+	// Error/Warning messages for form fields
+	let idError = '';
+	let showIdWarning = false;
 	let nameError = '';
 	let mainFileError = '';
 	let avatarError = '';
@@ -35,6 +37,22 @@
 		const minRam = type === 'site' ? config.defaults.minRam.site : config.defaults.minRam.bot;
 		ram = minRam;
 		showRamError = false;
+	}
+
+	// Validate ID field
+	function validateId() {
+		id = id.trim();
+
+		// Check if ".discloud.app" is included in the ID
+		if (id.toLowerCase().includes('.discloud.app')) {
+			// Remove ".discloud.app" from the ID
+			id = id.toLowerCase().replace('.discloud.app', '').trim();
+			showIdWarning = true; // Show warning message
+
+			setTimeout(() => {
+				showIdWarning = false;
+			}, 5000);
+		}
 	}
 
 	// Validate name field
@@ -137,7 +155,7 @@
 		name &&
 		main &&
 		ram >= 100 &&
-		(type === 'bot' || (type === 'site' && id)) &&
+		(type === 'bot' || (type === 'site' && id && !idError)) &&
 		!mainFileError &&
 		!avatarError;
 
@@ -194,6 +212,30 @@
 					{/each}
 				</select>
 			</div>
+
+			{#if type === 'site'}
+				<div class="mb-4">
+					<label for="appId" class="mb-2 block text-sm font-semibold text-gray-300">
+						{$t.discloudConfig.form.appId.label}<span class="text-[#fee75c]>*"></span>
+					</label>
+					<input
+						type="text"
+						id="appId"
+						bind:value={id}
+						on:input={validateId}
+						placeholder={$t.discloudConfig.form.appId.placeholder}
+						class="w-full rounded-md border border-gray-600 bg-[#0b0b0b] px-4 py-2 text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#57f287] focus:ring-opacity-50"
+					/>
+					{#if idError}
+						<p class="mt-1 text-sm text-red-500">{$t.discloudConfig.form.appId.error}</p>
+					{/if}
+					{#if showIdWarning}
+						<p class="mt-1 text-sm text-yellow-500">
+							{$t.discloudConfig.form.appId.warningMessage}
+						</p>
+					{/if}
+				</div>
+			{/if}
 
 			<div class="mb-4">
 				<label for="appName" class="mb-2 block text-sm font-semibold text-gray-300">

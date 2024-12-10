@@ -48,6 +48,12 @@ export default {
 				placeholder: 'Enter the application name',
 				error: 'You must provide a name for the application.'
 			},
+			appId: {
+				label: 'ID (Subdomain)',
+				placeholder: 'Enter your subdomain name',
+				warningMessage: "'discloud.app' is not necessary.",
+				error: 'You must provide an application ID.'
+			},
 			appMain: {
 				label: 'Main File',
 				placeholder: 'e.g., index.js or src/index.js',

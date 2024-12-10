@@ -49,6 +49,12 @@ export default {
 				placeholder: 'Digite o nome da aplicação',
 				error: 'Você deve fornecer um nome para a aplicação.'
 			},
+			appId: {
+				label: 'ID (Subdomínio)',
+				placeholder: 'Insira o nome do seu subdomínio',
+				warningMessage: "'discloud.app' não é necessário.",
+				error: 'Você deve fornecer um ID para a aplicação.'
+			},
 			appMain: {
 				label: 'Arquivo Principal',
 				placeholder: 'Ex.: index.js ou src/index.js',
