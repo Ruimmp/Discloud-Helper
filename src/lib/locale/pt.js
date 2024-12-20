@@ -24,6 +24,12 @@ export default {
 						'Crie facilmente o arquivo <code>discloud.config</code> para configurar seu bot ou site na Discloud.',
 					button: 'Acessar Gerador'
 				},
+				generateDiscordApplicationInvite: {
+					title: 'Link de Convite do Bot do Discord',
+					description:
+						'Gere um link de convite para o seu bot do Discord com escopos e permissões personalizáveis.',
+					button: 'Acessar Formulário'
+				},
 				comingSoon: {
 					title: 'Em breve...',
 					description:
@@ -38,7 +44,7 @@ export default {
 		ogTitle: 'Discloud Helper - Gerador de discloud.config',
 		ogDescription: 'Gere o arquivo discloud.config para configurar sua aplicação na Discloud.',
 		header: {
-			title: 'Configuração do Discloud'
+			title: 'discloud.config'
 		},
 		form: {
 			appType: {
@@ -112,6 +118,265 @@ export default {
 		},
 		preview: {
 			title: 'discloud.config'
+		}
+	},
+	botInvite: {
+		title: 'Link de Convite do Bot do Discord',
+		guide: {
+			title: 'Como obter o link do seu bot?',
+			step1: 'Vá para o ',
+			step2: 'Selecione a aplicação do seu bot.',
+			step3: 'Copie o ID do Client (bot) na seção "Informações Gerais".',
+			step4: 'Cole-o abaixo e configure os escopos e permissões.',
+			step5: 'Copie o link de convite gerado e compartilhe-o!'
+		},
+		input: {
+			clientId: 'ID do Client (bot)',
+			placeholder: 'Insira o seu ID do Client (bot)',
+			error: 'Por favor, insira um ID do Client (bot).'
+		},
+		scopes: {
+			title: 'Escopos',
+			options: {
+				bot: {
+					label: 'Bot',
+					description: 'Adicione o bot ao servidor com permissões.'
+				},
+				commands: {
+					label: 'Comandos de Aplicação',
+					description: 'Ativa os comandos de barra (slash commands).'
+				},
+				identify: {
+					label: 'Identificar',
+					description: 'Identifica o usuário que está autorizando o app.'
+				},
+				guilds: {
+					label: 'Servidores',
+					description: 'Acessa informações dos servidores do usuário.'
+				}
+			}
+		},
+		permissions: {
+			title: 'Permissões',
+			main: {
+				admin: {
+					label: 'Administrador',
+					description: 'Acesso total ao servidor.'
+				},
+				sendMessages: {
+					label: 'Enviar Mensagens',
+					description: 'Enviar mensagens no chat.'
+				},
+				connect: {
+					label: 'Conectar',
+					description: 'Conectar-se a canais de voz.'
+				},
+				speak: {
+					label: 'Falar',
+					description: 'Falar nos canais de voz.'
+				}
+			},
+			additional: {
+				title: 'Permissões Adicionais',
+				general: {
+					title: 'Geral',
+					auditLog: {
+						label: 'Visualizar Log de Auditoria',
+						description: 'Visualiza o log de auditoria do servidor.'
+					},
+					manageServer: {
+						label: 'Gerenciar Servidor',
+						description: 'Gerencia as configurações do servidor.'
+					},
+					manageRoles: {
+						label: 'Gerenciar Cargos',
+						description: 'Gerencia os cargos do servidor.'
+					},
+					manageChannels: {
+						label: 'Gerenciar Canais',
+						description: 'Gerencia os canais do servidor.'
+					},
+					kickMembers: {
+						label: 'Expulsar Membros',
+						description: 'Expulsa membros do servidor.'
+					},
+					banMembers: {
+						label: 'Banir Membros',
+						description: 'Bane membros do servidor.'
+					},
+					createInstantInvite: {
+						label: 'Criar Convite Instantâneo',
+						description: 'Cria um link de convite instantâneo.'
+					},
+					changeNickname: {
+						label: 'Mudar Apelido',
+						description: 'Mudar o seu apelido.'
+					},
+					manageNicknames: {
+						label: 'Gerenciar Apelidos',
+						description: 'Gerencia os apelidos no servidor.'
+					},
+					manageExpressions: {
+						label: 'Gerenciar Expressões',
+						description: 'Gerencia expressões do servidor.'
+					},
+					createExpressions: {
+						label: 'Criar Expressões',
+						description: 'Cria expressões no servidor.'
+					},
+					manageWebhooks: {
+						label: 'Gerenciar Webhooks',
+						description: 'Gerencia os webhooks do servidor.'
+					},
+					viewChannels: {
+						label: 'Visualizar Canais',
+						description: 'Visualiza os canais do servidor.'
+					},
+					manageEvents: {
+						label: 'Gerenciar Eventos',
+						description: 'Gerencia eventos do servidor.'
+					},
+					createEvents: {
+						label: 'Criar Eventos',
+						description: 'Cria eventos no servidor.'
+					},
+					moderateMembers: {
+						label: 'Moderar Membros',
+						description: 'Modera membros do servidor.'
+					},
+					viewServerInsights: {
+						label: 'Visualizar Insights do Servidor',
+						description: 'Visualiza as estatísticas do servidor.'
+					},
+					viewServerSubscriptionInsights: {
+						label: 'Visualizar Assinaturas do Servidor',
+						description: 'Visualiza as estatísticas das assinaturas do servidor.'
+					}
+				},
+				text: {
+					title: 'Texto',
+					createPublicThreads: {
+						label: 'Criar Tópicos Públicos',
+						description: 'Cria tópicos públicos.'
+					},
+					createPrivateThreads: {
+						label: 'Criar Tópicos Privados',
+						description: 'Cria tópicos privados.'
+					},
+					sendMessagesInThreads: {
+						label: 'Enviar Mensagens em Tópicos',
+						description: 'Envia mensagens nos tópicos.'
+					},
+					manageMessages: {
+						label: 'Gerenciar Mensagens',
+						description: 'Gerencia mensagens.'
+					},
+					sendTTSMessages: {
+						label: 'Enviar Mensagens TTS',
+						description: 'Envia mensagens em texto-para-voz (TTS).'
+					},
+					manageThreads: {
+						label: 'Gerenciar Tópicos',
+						description: 'Gerencia tópicos.'
+					},
+					embedLinks: {
+						label: 'Incorporar Links',
+						description: 'Incorpora links nas mensagens.'
+					},
+					attachFiles: {
+						label: 'Anexar Arquivos',
+						description: 'Anexa arquivos às mensagens.'
+					},
+					readMessageHistory: {
+						label: 'Ler Histórico de Mensagens',
+						description: 'Lê o histórico de mensagens.'
+					},
+					mentionEveryone: {
+						label: 'Mencionar Todos',
+						description: 'Menciona todos no servidor.'
+					},
+					useExternalEmojis: {
+						label: 'Usar Emojis Externos',
+						description: 'Usa emojis externos.'
+					},
+					useExternalStickers: {
+						label: 'Usar Figurinhas Externas',
+						description: 'Usa figurinhas externas.'
+					},
+					addReactions: {
+						label: 'Adicionar Reações',
+						description: 'Adiciona reações às mensagens.'
+					},
+					useSlashCommands: {
+						label: 'Usar Comandos Slash',
+						description: 'Usa comandos de barra.'
+					},
+					useEmbeddedActivities: {
+						label: 'Usar Atividades Incorporadas',
+						description: 'Usa atividades incorporadas.'
+					},
+					useExternalApps: {
+						label: 'Usar Aplicações Externas',
+						description: 'Usa aplicações externas.'
+					},
+					createPolls: {
+						label: 'Criar Enquetes',
+						description: 'Cria enquetes no servidor.'
+					}
+				},
+				voice: {
+					title: 'Voz',
+					video: {
+						label: 'Vídeo',
+						description: 'Ativa o vídeo.'
+					},
+					muteMembers: {
+						label: 'Silenciar Membros',
+						description: 'Silencia membros nos canais de voz.'
+					},
+					deafenMembers: {
+						label: 'Ensurdecer Membros',
+						description: 'Ensurdece membros nos canais de voz.'
+					},
+					moveMembers: {
+						label: 'Mover Membros',
+						description: 'Move membros entre canais de voz.'
+					},
+					useVoiceActivity: {
+						label: 'Usar Atividade de Voz',
+						description: 'Usa atividade de voz para falar.'
+					},
+					prioritySpeaker: {
+						label: 'Orador Prioritário',
+						description: 'Concede prioridade de fala.'
+					},
+					requestToSpeak: {
+						label: 'Solicitar Fala',
+						description: 'Solicita a fala nos canais.'
+					},
+					useEmbeddedActivities: {
+						label: 'Usar Atividades Incorporadas',
+						description: 'Usa atividades incorporadas.'
+					},
+					useSoundboard: {
+						label: 'Usar Mesa de Som',
+						description: 'Usa a mesa de som.'
+					},
+					useExternalSounds: {
+						label: 'Usar Sons Externos',
+						description: 'Usa sons externos.'
+					}
+				}
+			}
+		},
+		output: {
+			title: 'Link de Convite Gerado',
+			placeholder: 'Insira o ID do Client (bot) para gerar o link de convite.'
+		},
+		buttons: {
+			copy: 'Copiar Link',
+			enabled: 'Ativado',
+			disabled: 'Desativado'
 		}
 	},
 	errorPage: {

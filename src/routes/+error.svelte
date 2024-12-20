@@ -10,7 +10,7 @@
 </script>
 
 <svelte:head>
-	<title>{$page.status} - {$t.errorPage.title}</title>
+	<title>Error - {$page.status}</title>
 </svelte:head>
 
 <div class="flex items-center justify-center bg-[#0b0b0b] text-white">

@@ -3,10 +3,16 @@
 </script>
 
 <svelte:head>
-	<title>{$t.header.title}</title>
-	<meta name="description" content={$t.landing.welcome.description} />
-	<meta property="og:title" content="{$t.header.title} - {$t.header.tools.title}" />
-	<meta property="og:description" content={$t.landing.welcome.description} />
+	<title>Discloud Helper</title>
+	<meta
+		name="description"
+		content="Useful tools to simplify the configuration and management of your applications on Discloud."
+	/>
+	<meta property="og:title" content="Discloud Helper" />
+	<meta
+		property="og:description"
+		content="Useful tools to simplify the configuration and management of your applications on Discloud."
+	/>
 	<meta property="og:image" content="https://i.imgur.com/hjeNHfj.png" />
 	<meta property="og:url" content="https://init.discloud.app/" />
 	<meta property="og:type" content="website" />
@@ -36,6 +42,21 @@
 					class="mt-4 inline-block rounded-md bg-[#57f287] px-4 py-2 text-sm font-medium text-black hover:bg-[#3ba459]"
 				>
 					{$t.landing.functionalities.tools.configGenerator.button}
+				</a>
+			</div>
+
+			<div class="rounded-lg bg-[#1c1c1c] p-6 shadow-md">
+				<h3 class="text-xl font-semibold text-[#57f287]">
+					{$t.landing.functionalities.tools.generateDiscordApplicationInvite.title}
+				</h3>
+				<p class="mt-2 text-gray-300">
+					{@html $t.landing.functionalities.tools.generateDiscordApplicationInvite.description}
+				</p>
+				<a
+					href="/invite-discord-bot"
+					class="mt-4 inline-block rounded-md bg-[#57f287] px-4 py-2 text-sm font-medium text-black hover:bg-[#3ba459]"
+				>
+					{$t.landing.functionalities.tools.generateDiscordApplicationInvite.button}
 				</a>
 			</div>
 

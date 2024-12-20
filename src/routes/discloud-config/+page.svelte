@@ -182,21 +182,28 @@
 </script>
 
 <svelte:head>
-	<title>discloud.config</title>
-	<meta name={$t.discloudConfig.title} content={$t.discloudConfig.description} />
-
-	<meta property="og:title" content={$t.discloudConfig.ogTitle} />
-	<meta property="og:description" content={$t.discloudConfig.ogDescription} />
+	<title>Discloud Helper - discloud.config</title>
+	<meta
+		name="description"
+		content="Generate the discloud.config file to configure your application on Discloud."
+	/>
+	<meta property="og:title" content="Discloud Helper - discloud.config" />
+	<meta
+		property="og:description"
+		content="Generate the discloud.config file to configure your application on Discloud."
+	/>
 	<meta property="og:image" content="https://i.imgur.com/hjeNHfj.png" />
 	<meta property="og:url" content="https://init.discloud.app/discloud-config" />
 	<meta property="og:type" content="article" />
 </svelte:head>
 
-<div class="flex flex-col items-center justify-center bg-[#0b0b0b] p-4 text-white">
-	<h1 class="mb-4 text-2xl font-bold text-[#45be6c]">{$t.discloudConfig.header.title}</h1>
-
+<h1 class="mb-4 text-center text-3xl font-bold text-[#57f287]">{$t.discloudConfig.header.title}</h1>
+<div class="flex flex-wrap items-center justify-center bg-[#0b0b0b] p-4 text-white">
 	<div class="flex w-full max-w-6xl flex-col gap-6 md:flex-row">
-		<form on:submit={handleSubmit} class="w-[750px] rounded-lg bg-[#1c1c1c] p-6 shadow-lg">
+		<form
+			on:submit={handleSubmit}
+			class="w-full rounded-lg bg-[#1c1c1c] p-6 shadow-lg md:w-[750px]"
+		>
 			<div class="mb-4">
 				<label for="appType" class="mb-2 block text-sm font-semibold text-gray-300">
 					{$t.discloudConfig.form.appType.label}
@@ -460,7 +467,7 @@
 				<label for="appApts" class="mb-2 block text-sm font-semibold text-gray-300">
 					{$t.discloudConfig.form.appApts.label}
 				</label>
-				<div class="grid grid-cols-3 gap-4">
+				<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
 					{#each aptsOptions as apt}
 						<div
 							class="relative flex items-center space-x-4 rounded-md border border-gray-600 bg-[#0b0b0b] p-3 shadow-sm"
@@ -469,7 +476,7 @@
 							<button
 								type="button"
 								on:click={() => toggleApt(apt.name)}
-								class={`flex w-full items-center justify-center rounded-md px-4 py-2 text-sm font-semibold transition duration-300 ${
+								class={`flex w-full items-center justify-center rounded-md px-2 py-2 text-xs font-semibold transition duration-300 md:px-4 md:py-2 md:text-sm ${
 									selectedApts.includes(apt.name.toLowerCase())
 										? 'bg-[#57f287] text-black hover:bg-[#3ba459]'
 										: 'bg-[#ed4245] text-white hover:bg-[#c92a2f]'
@@ -517,7 +524,7 @@
 
 								<!-- APT dependencies list -->
 								<div
-									class="absolute left-1/2 top-full z-50 mt-2 hidden w-48 rounded-md border border-gray-600 bg-[#1c1c1c] p-3 text-sm text-gray-300 shadow-lg group-hover:flex"
+									class="absolute left-1/2 top-full z-50 mt-2 hidden w-full rounded-md border border-gray-600 bg-[#1c1c1c] p-3 text-sm text-gray-300 shadow-lg group-hover:flex md:w-48"
 									style="transform: translateX(-50%);"
 								>
 									<ul class="list-inside list-disc space-y-1">
@@ -546,7 +553,7 @@
 
 		<!-- Config Preview -->
 		<div
-			class="flex-1 rounded-lg bg-[#1c1c1c] p-6 shadow-lg md:sticky md:top-4"
+			class="w-full flex-1 rounded-lg bg-[#1c1c1c] p-6 shadow-lg md:sticky md:top-4 md:w-auto"
 			style="height: fit-content;"
 		>
 			<div class="overflow-hidden rounded-lg border border-gray-600 bg-[#0b0b0b] shadow-lg">

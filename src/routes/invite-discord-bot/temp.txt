@@ -1,0 +1,385 @@
+<script>
+	let clientId = '';
+	let permissions = 0;
+	let scope = ['bot'];
+	let inviteLink = '';
+	let linkError = '';
+	let expandedGroup = null;
+
+	const scopes = [
+		{ value: 'bot', label: 'Bot', description: 'Add the bot to the server with permissions.' },
+		{
+			value: 'applications.commands',
+			label: 'Application Commands',
+			description: 'Enables slash commands.'
+		},
+		{
+			value: 'identify',
+			label: 'Identify',
+			description: 'Identify the user authorizing the app.'
+		},
+		{
+			value: 'guilds',
+			label: 'Guilds',
+			description: 'Access user server information.'
+		}
+	];
+
+	const mainPermissions = [
+		{ value: '8', label: 'Administrator', description: 'Full access to the server.' },
+		{ value: '2048', label: 'Send Messages', description: 'Send messages in the chat.' },
+		{ value: '1048576', label: 'Connect', description: 'Connect to voice channels.' },
+		{ value: '2097152', label: 'Speak', description: 'Speak in voice channels.' }
+	];
+
+	const additionalPermissionGroups = [
+		{
+			title: 'Permissões Gerais',
+			permissions: [
+				{
+					value: '128',
+					label: 'View Audit Log',
+					description: 'Visualizar registros de auditoria.'
+				},
+				{
+					value: '32',
+					label: 'Manage Server',
+					description: 'Gerenciar configurações do servidor.'
+				},
+				{ value: '268435456', label: 'Manage Roles', description: 'Criar e editar cargos.' },
+				{ value: '16', label: 'Manage Channels', description: 'Gerenciar canais no servidor.' },
+				{ value: '2', label: 'Kick Members', description: 'Expulsar membros do servidor.' },
+				{ value: '4', label: 'Ban Members', description: 'Banir membros do servidor.' },
+				{ value: '1', label: 'Create Instant Invite', description: 'Criar convites instantâneos.' },
+				{
+					value: '67108864',
+					label: 'Change Nickname',
+					description: 'Alterar seu próprio apelido.'
+				},
+				{
+					value: '134217728',
+					label: 'Manage Nicknames',
+					description: 'Gerenciar apelidos de membros.'
+				},
+				{
+					value: '1073741824',
+					label: 'Manage Expressions',
+					description: 'Gerenciar emojis e adesivos.'
+				},
+				{
+					value: '536870912',
+					label: 'Create Expressions',
+					description: 'Criar emojis e adesivos.'
+				},
+				{ value: '32768', label: 'Manage Webhooks', description: 'Criar e editar webhooks.' },
+				{ value: '1024', label: 'View Channels', description: 'Ver canais no servidor.' },
+				{
+					value: '8589934592',
+					label: 'Manage Events',
+					description: 'Gerenciar eventos no servidor.'
+				},
+				{ value: '17179869184', label: 'Create Events', description: 'Criar eventos no servidor.' },
+				{ value: '262144', label: 'Moderate Members', description: 'Moderar membros do servidor.' },
+				{
+					value: '2199023255552',
+					label: 'View Server Insights',
+					description: 'Visualizar insights do servidor.'
+				},
+				{
+					value: '4398046511104',
+					label: 'View Server Subscription Insights',
+					description: 'Ver insights de assinaturas.'
+				}
+			]
+		},
+		{
+			title: 'Permissões de Texto',
+			permissions: [
+				{
+					value: '8388608',
+					label: 'Create Public Threads',
+					description: 'Criar threads públicas.'
+				},
+				{
+					value: '16777216',
+					label: 'Create Private Threads',
+					description: 'Criar threads privadas.'
+				},
+				{
+					value: '8192',
+					label: 'Send Messages in Threads',
+					description: 'Enviar mensagens em threads.'
+				},
+				{ value: '32768', label: 'Manage Messages', description: 'Gerenciar mensagens no chat.' },
+				{
+					value: '4096',
+					label: 'Send TTS Messages',
+					description: 'Enviar mensagens TTS (texto-para-voz).'
+				},
+				{ value: '524288', label: 'Manage Threads', description: 'Gerenciar threads no servidor.' },
+				{ value: '16384', label: 'Embed Links', description: 'Adicionar links incorporados.' },
+				{ value: '131072', label: 'Attach Files', description: 'Enviar arquivos no chat.' },
+				{
+					value: '65536',
+					label: 'Read Message History',
+					description: 'Ler o histórico de mensagens.'
+				},
+				{
+					value: '4194304',
+					label: 'Mention Everyone',
+					description: 'Mencionar @everyone e @here.'
+				},
+				{ value: '262144', label: 'Use External Emojis', description: 'Usar emojis externos.' },
+				{
+					value: '2097152',
+					label: 'Use External Stickers',
+					description: 'Usar adesivos externos.'
+				},
+				{ value: '64', label: 'Add Reactions', description: 'Adicionar reações às mensagens.' },
+				{
+					value: '2147483648',
+					label: 'Use Slash Commands',
+					description: 'Utilizar comandos barra (slash).'
+				},
+				{
+					value: '549755813888',
+					label: 'Use Embedded Activities',
+					description: 'Usar atividades integradas.'
+				},
+				{
+					value: '1099511627776',
+					label: 'Use External Apps',
+					description: 'Interagir com aplicativos externos.'
+				},
+				{
+					value: '2199023255552',
+					label: 'Create Polls',
+					description: 'Criar enquetes no servidor.'
+				}
+			]
+		},
+		{
+			title: 'Permissões de Voz',
+			permissions: [
+				{ value: '8388608', label: 'Video', description: 'Iniciar vídeo nos canais.' },
+				{ value: '4194304', label: 'Mute Members', description: 'Silenciar outros membros.' },
+				{ value: '8192', label: 'Deafen Members', description: 'Impedir outros de ouvir áudio.' },
+				{ value: '16384', label: 'Move Members', description: 'Mover membros entre canais.' },
+				{ value: '67108864', label: 'Use Voice Activity', description: 'Usar detecção de voz.' },
+				{ value: '256', label: 'Priority Speaker', description: 'Ter prioridade ao falar.' },
+				{
+					value: '131072',
+					label: 'Request To Speak',
+					description: 'Solicitar para falar em canais.'
+				},
+				{
+					value: '549755813888',
+					label: 'Use Embedded Activities',
+					description: 'Participar de atividades integradas.'
+				},
+				{ value: '34359738368', label: 'Use Soundboard', description: 'Usar a mesa de som.' },
+				{ value: '68719476736', label: 'Use External Sounds', description: 'Usar sons externos.' }
+			]
+		}
+	];
+
+	// Generate the invite link based on input values
+	function generateLink() {
+		if (!clientId) {
+			linkError = 'Please enter a Client ID.';
+			inviteLink = '';
+			return;
+		}
+		linkError = '';
+		const scopeParam = scope.join('%20');
+		inviteLink = `https://discord.com/oauth2/authorize?client_id=${clientId}&scope=${scopeParam}&permissions=${permissions}`;
+	}
+
+	// Toggle individual permissions
+	function togglePermission(value) {
+		permissions ^= value;
+		generateLink();
+	}
+
+	// Toggle OAuth scopes
+	function toggleScope(s) {
+		scope = scope.includes(s) ? scope.filter((x) => x !== s) : [...scope, s];
+		generateLink();
+	}
+</script>
+
+<svelte:head>
+	<title>Discloud Helper - Bot Invite Link</title>
+	<meta
+		name="description"
+		content="Easily generate an invite link for your Discord bot with customizable scopes and permissions."
+	/>
+	<meta property="og:title" content="Discord Helper - Bot Invite Link" />
+	<meta
+		property="og:description"
+		content="Quickly configure and generate a custom invite link for your Discord bot with the required permissions and OAuth scopes."
+	/>
+	<meta property="og:image" content="https://i.imgur.com/hjeNHfj.png" />
+	<meta property="og:url" content="https://init.discloud.app/bot-invite" />
+	<meta property="og:type" content="website" />
+</svelte:head>
+
+<!-- Main Container -->
+<div class="flex flex-col items-center justify-center bg-[#0b0b0b] p-4 text-white">
+	<h1 class="mb-4 text-3xl font-bold text-[#57f287]">Discord Bot Invite Link</h1>
+
+	<!-- Guide Section -->
+	<div class="mb-6 w-full max-w-4xl rounded-lg border border-[#57f287] bg-[#1c1c1c] p-6 shadow-md">
+		<h2 class="mb-4 text-2xl font-semibold text-[#57f287]">How to Obtain Your Bot Link?</h2>
+		<p class="mb-2 text-gray-300">
+			1. Go to the
+			<a
+				href="https://discord.com/developers/applications"
+				target="_blank"
+				class="text-[#57f287] underline hover:text-[#3ba459]">Discord Developer Portal</a
+			>.
+		</p>
+		<p class="mb-2 text-gray-300">2. Select your bot application.</p>
+		<p class="mb-2 text-gray-300">
+			3. Copy the <strong>Client ID</strong> from the "General Information" section.
+		</p>
+		<p class="mb-2 text-gray-300">4. Paste it below and configure scopes and permissions.</p>
+		<p class="text-gray-300">5. Copy the generated invite link and share it!</p>
+	</div>
+
+	<div class="w-full max-w-4xl rounded-lg bg-[#1c1c1c] p-6 shadow-lg">
+		<!-- Client ID Input -->
+		<div class="mb-4">
+			<label for="client-id" class="block text-sm font-semibold text-gray-300">Client ID</label>
+			<input
+				type="text"
+				bind:value={clientId}
+				placeholder="Enter your Client ID"
+				maxlength="20"
+				class="w-full rounded-md border border-gray-600 bg-[#0b0b0b] px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#57f287]"
+				on:input={generateLink}
+			/>
+			{#if linkError}
+				<p class="mt-1 text-sm text-red-500">{linkError}</p>
+			{/if}
+		</div>
+
+		<!-- OAuth Scopes Selection -->
+		<div class="mb-6">
+			<h2 class="text-lg font-semibold text-[#57f287]">Scopes</h2>
+			<div class="grid grid-cols-2 gap-4">
+				{#each scopes as s}
+					<div class="flex items-center space-x-3">
+						<button
+							on:click={() => toggleScope(s.value)}
+							class="w-32 rounded-md px-4 py-2 font-semibold transition duration-300 {scope.includes(
+								s.value
+							)
+								? 'bg-[#57f287] text-black'
+								: 'bg-[#ed4245] text-white'}"
+						>
+							{scope.includes(s.value) ? 'Enabled' : 'Disabled'}
+						</button>
+						<div>
+							<p class="font-semibold text-gray-300">{s.label}</p>
+							<p class="text-xs text-gray-400">{s.description}</p>
+						</div>
+					</div>
+				{/each}
+			</div>
+		</div>
+
+		<!-- Permissions Section -->
+		<div class="mb-6">
+			<h2 class="text-lg font-semibold text-[#57f287]">Permissions</h2>
+			<div class="grid grid-cols-2 gap-4">
+				{#each mainPermissions as perm}
+					<div class="flex items-center space-x-3">
+						<button
+							on:click={() => togglePermission(perm.value)}
+							class="w-32 rounded-md px-4 py-2 font-semibold transition duration-300 {permissions &
+							perm.value
+								? 'bg-[#57f287] text-black'
+								: 'bg-[#ed4245] text-white'}"
+						>
+							{permissions & perm.value ? 'Enabled' : 'Disabled'}
+						</button>
+						<div>
+							<p class="font-semibold text-gray-300">{perm.label}</p>
+							<p class="text-xs text-gray-400">{perm.description}</p>
+						</div>
+					</div>
+				{/each}
+			</div>
+		</div>
+
+		<!-- Additional Permissions with Accordion -->
+		<div class="mb-4">
+			<h1 class="mb-4 text-2xl font-bold text-[#57f287]">Additional Permissions</h1>
+			<div class="grid grid-cols-1 gap-4">
+				{#each additionalPermissionGroups as group, i}
+					<div class="w-full">
+						<!-- Accordion Header -->
+						<button
+							class="flex w-full items-center justify-between rounded-md border border-gray-600 bg-[#0b0b0b] p-3 text-sm font-semibold text-gray-300"
+							on:click={() => (expandedGroup = expandedGroup === i ? null : i)}
+						>
+							<span>{group.title}</span>
+							<span class="rotate-icon" class:rotate-180={expandedGroup === i}> ▲ </span>
+						</button>
+
+						<!-- Accordion Content -->
+						{#if expandedGroup === i}
+							<div class="grid-cols-0 mt-2 grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
+								{#each group.permissions as perm}
+									<div
+										class="flex items-center space-x-3 rounded-md border border-gray-600 bg-[#1c1c1c] p-3"
+									>
+										<button
+											class="h-12 w-32 rounded-md px-2 py-1 text-sm font-semibold transition duration-300 {permissions &
+											perm.value
+												? 'bg-[#57f287] text-black'
+												: 'bg-[#ed4245] text-white'}"
+											on:click={() => togglePermission(perm.value)}
+										>
+											{permissions & perm.value ? 'Enabled' : 'Disabled'}
+										</button>
+										<div>
+											<p class="font-semibold text-gray-300">{perm.label}</p>
+											<p class="text-xs text-gray-400">{perm.description}</p>
+										</div>
+									</div>
+								{/each}
+							</div>
+						{/if}
+					</div>
+				{/each}
+			</div>
+		</div>
+
+		<!-- Output Invite Link -->
+		<div class="mt-6 rounded-md border border-gray-600 bg-[#0b0b0b] p-4">
+			<h3 class="mb-2 text-lg font-semibold text-[#57f287]">Generated Invite Link</h3>
+			<div
+				class={`overflow-x-auto rounded-md p-2 text-sm transition duration-300 ${
+					clientId ? 'bg-[#1c1c1c] text-gray-300' : 'text-[#ed4245]'
+				}`}
+			>
+				{inviteLink || 'Fill in the fields to generate a link.'}
+			</div>
+		</div>
+
+		<!-- Copy Button -->
+		<button
+			on:click={() => navigator.clipboard.writeText(inviteLink)}
+			class={`mt-4 w-full rounded-md px-4 py-2 font-semibold transition duration-300 ${
+				inviteLink
+					? 'bg-[#57f287] text-black hover:bg-[#3ba459]'
+					: 'cursor-not-allowed bg-[#ed4245] text-white opacity-50'
+			}`}
+			disabled={!inviteLink}
+		>
+			Copy Link
+		</button>
+	</div>
+</div>
