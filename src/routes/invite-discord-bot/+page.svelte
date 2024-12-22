@@ -8,7 +8,8 @@
 	let linkError = '';
 	let expandedGroup = null;
 
-	const scopes = [
+	// Reactive derived values for scopes
+	$: scopes = [
 		{
 			value: 'bot',
 			label: $t.botInvite.scopes.options.bot.label,
@@ -31,7 +32,8 @@
 		}
 	];
 
-	const mainPermissions = [
+	// Reactive derived values for main permissions
+	$: mainPermissions = [
 		{
 			value: '8',
 			label: $t.botInvite.permissions.main.admin.label,
@@ -54,7 +56,7 @@
 		}
 	];
 
-	const additionalPermissionGroups = [
+	$: additionalPermissionGroups = [
 		{
 			title: $t.botInvite.permissions.additional.general.title,
 			permissions: [
@@ -389,7 +391,9 @@
 								? 'bg-[#57f287] text-black'
 								: 'bg-[#ed4245] text-white'}"
 						>
-							{scope.includes(s.value) ? 'Enabled' : 'Disabled'}
+							{scope.includes(s.value)
+								? $t.botInvite.buttons.enabled
+								: $t.botInvite.buttons.disabled}
 						</button>
 						<div>
 							<p class="font-semibold text-gray-300">{s.label}</p>
@@ -413,7 +417,9 @@
 								? 'bg-[#57f287] text-black'
 								: 'bg-[#ed4245] text-white'}"
 						>
-							{permissions & perm.value ? 'Enabled' : 'Disabled'}
+							{permissions & perm.value
+								? $t.botInvite.buttons.enabled
+								: $t.botInvite.buttons.disabled}
 						</button>
 						<div>
 							<p class="font-semibold text-gray-300">{perm.label}</p>
