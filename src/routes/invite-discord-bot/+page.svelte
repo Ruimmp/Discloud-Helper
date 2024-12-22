@@ -435,7 +435,7 @@
 			<h2 class="mb-1 text-lg font-semibold text-[#57f287]">
 				{$t.botInvite.permissions.additional.title}
 			</h2>
-			<div class="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-2">
+			<div class="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-1">
 				{#each additionalPermissionGroups as group, i}
 					<div class="w-full">
 						<!-- Accordion Header -->
