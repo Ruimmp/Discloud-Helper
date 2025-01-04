@@ -25,7 +25,7 @@ export default {
 					button: 'Acessar Gerador'
 				},
 				generateDiscordApplicationInvite: {
-					title: 'Link de Convite do Bot do Discord',
+					title: 'Link de Convite de Bot Discord',
 					description:
 						'Gere um link de convite para o seu bot do Discord com escopos e permissões personalizáveis.',
 					button: 'Acessar Formulário'
@@ -121,7 +121,7 @@ export default {
 		}
 	},
 	botInvite: {
-		title: 'Link de Convite do Bot do Discord',
+		title: 'Link de Convite de Bot Discord',
 		guide: {
 			title: 'Como obter o link do seu bot?',
 			step1: 'Vá para o ',
@@ -374,7 +374,9 @@ export default {
 			placeholder: 'Insira o ID do Client (bot) para gerar o link de convite.'
 		},
 		buttons: {
-			copy: 'Copiar Link',
+			copyButton: 'Copiar Link',
+			copySuccess: 'Copiado!',
+			copyError: 'Erro ao copiar o link!',
 			enabled: 'Ativado',
 			disabled: 'Desativado'
 		}

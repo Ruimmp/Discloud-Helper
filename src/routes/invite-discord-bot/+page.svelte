@@ -2,11 +2,12 @@
 	import { t } from '$lib/langStore';
 
 	let clientId = '';
-	let permissions = 0;
-	let scope = ['bot'];
+	let permissions = 8;
+	let scope = ['bot', 'applications.commands'];
 	let inviteLink = '';
 	let linkError = '';
 	let expandedGroup = null;
+	let copyButtonText = $t.botInvite.buttons.copyButton;
 
 	// Reactive derived values for scopes
 	$: scopes = [
@@ -323,6 +324,21 @@
 		scope = scope.includes(s) ? scope.filter((x) => x !== s) : [...scope, s];
 		generateLink();
 	}
+
+	// Copy the generated invite link to clipboard
+	function handleCopy() {
+		navigator.clipboard
+			.writeText(inviteLink)
+			.then(() => {
+				copyButtonText = $t.botInvite.buttons.copySuccess;
+				setTimeout(() => (copyButtonText = $t.botInvite.buttons.copyButton), 2000);
+			})
+			.catch((err) => {
+				console.error('Erro ao copiar conteúdo:', err);
+				copyButtonText = $t.botInvite.buttons.copyError;
+				setTimeout(() => (copyButtonText = $t.botInvite.buttons.copyButton), 2000);
+			});
+	}
 </script>
 
 <svelte:head>
@@ -492,15 +508,15 @@
 
 		<!-- Copy Button -->
 		<button
-			on:click={() => navigator.clipboard.writeText(inviteLink)}
-			class={`mt-4 w-full rounded-md px-4 py-2 font-semibold transition duration-300 sm:w-auto ${
+			on:click={handleCopy}
+			class={`mt-4 w-full rounded-md px-4 py-2 font-semibold transition duration-300 ${
 				inviteLink
 					? 'bg-[#57f287] text-black hover:bg-[#3ba459]'
 					: 'cursor-not-allowed bg-[#ed4245] text-white opacity-50'
 			}`}
 			disabled={!inviteLink}
 		>
-			{$t.botInvite.buttons.copy}
+			{copyButtonText}
 		</button>
 	</div>
 </div>

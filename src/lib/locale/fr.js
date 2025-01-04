@@ -25,7 +25,7 @@ export default {
 					button: 'Accéder au Générateur'
 				},
 				generateDiscordApplicationInvite: {
-					title: "Lien d'invitation de l'application Discord",
+					title: "Lien d'invitation d'un bot Discord",
 					description:
 						"Générez un lien d'invitation pour votre application Discord avec des portées et des permissions personnalisables.",
 					button: 'Accéder au Formulaire'
@@ -39,7 +39,7 @@ export default {
 		}
 	},
 	botInvite: {
-		title: "Lien d'invitation du bot Discord",
+		title: "Lien d'invitation d'un bot Discord",
 		description:
 			"Générez facilement un lien d'invitation pour votre bot Discord avec des portées et des permissions personnalisables.",
 		guide: {
@@ -294,7 +294,9 @@ export default {
 			placeholder: "Entrez votre ID Client pour générer le lien d'invitation."
 		},
 		buttons: {
-			copy: 'Copier le lien',
+			copyButton: 'Copier le lien',
+			copySuccess: 'Copié !',
+			copyError: 'Erreur lors de la copie du lien !',
 			enabled: 'Activé',
 			disabled: 'Désactivé'
 		}

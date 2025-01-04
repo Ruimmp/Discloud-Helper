@@ -375,7 +375,9 @@ export default {
 			placeholder: 'Enter your Client ID to generate the invite link.'
 		},
 		buttons: {
-			copy: 'Copy Link',
+			copyButton: 'Copy Link',
+			copySuccess: 'Copied!',
+			copyError: 'Error copying content!',
 			enabled: 'Enabled',
 			disabled: 'Disabled'
 		}
