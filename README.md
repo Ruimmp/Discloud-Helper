@@ -2,7 +2,7 @@
 
 ### 📄 Descrição
 
-O **Discloud Helper** é uma aplicação web desenvolvida com **SvelteKit** e **TailwindCSS** para facilitar a configuração e o gerenciamento de aplicações na plataforma Discloud. Este projeto foi criado para simplificar a criação e configuração de arquivos `discloud.config`, permitindo que usuários preparem suas aplicações de maneira intuitiva e rápida. Além disso, planejo expandir o site com novas funcionalidades para atender às necessidades da comunidade (em seu devido tempo, no momento estou com preguiça de continuar sem ideias de algo que possa realmente ser útil).
+O **Discloud Helper** é uma aplicação web desenvolvida com **SvelteKit** e **TailwindCSS** para facilitar a configuração e o gerenciamento de aplicações na plataforma da Discloud. Este projeto foi criado para simplificar a criação e configuração de arquivos `discloud.config`, permitindo que usuários preparem suas aplicações de maneira intuitiva e rápida. Além disso, inclui uma ferramenta prática para gerar links de convite para bots Discord, com opções de configuração de permissões e escopos.
 
 ⚠️ **Atenção**: Este projeto não possui afiliação oficial com a Discloud. É uma iniciativa independente para apoiar a comunidade. Para saber mais sobre a Discloud, acesse:
 
@@ -14,6 +14,10 @@ O **Discloud Helper** é uma aplicação web desenvolvida com **SvelteKit** e **
 ### ✨ Funcionalidades
 
 - 🛠️ **Geração do discloud.config**: Interface prática para configurar e criar o arquivo `discloud.config`, essencial para o deploy de aplicações na Discloud.
+- 🤖 **Gerador de Links de Convite para Bots**: Ferramenta para criar links personalizados de convite para bots Discord, com opções de permissões e escopos OAuth. Inclui:
+  - Seleção de escopos como `bot` e `applications.commands`.
+  - Configuração de permissões como administrador por padrão.
+  - Botão de cópia para facilitar o compartilhamento do link gerado.
 
 ### 🌍 Acesse o Site
 
