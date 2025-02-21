@@ -231,7 +231,7 @@
 					id="appType"
 					bind:value={type}
 					on:change={handleTypeChange}
-					class="w-full rounded-md border border-gray-600 bg-[#0b0b0b] px-4 py-2 text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#57f287] focus:ring-opacity-50"
+					class="w-full rounded-md border border-gray-600 bg-[#0b0b0b] px-4 py-2 text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#57f287] focus:ring-opacity-50 cursor-pointer"
 				>
 					{#each appTypes as appType}
 						<option value={appType}
@@ -505,8 +505,8 @@
 					bind:value={version}
 					disabled={!main || mainFileError}
 					class={`w-full rounded-md border border-gray-600 bg-[#0b0b0b] px-4 py-2 text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#57f287] focus:ring-opacity-50 ${
-						!mainFileError ? "cursor-pointer" : "cursor-default"
-					}" `}
+						!main || mainFileError ? "cursor-not-allowed" : "cursor-pointer"
+					}`}
 				>
 					{#if !main}
 						<option value="" disabled selected hidden>
