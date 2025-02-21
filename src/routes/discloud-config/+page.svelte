@@ -1,29 +1,29 @@
 <script>
-	import { t } from '$lib/langStore';
-	import config from './discloudConfig.json';
+	import { t } from "$lib/langStore";
+	import config from "./discloudConfig.json";
 
 	// Variables for form fields
-	let type = 'bot';
-	let name = '';
-	let main = '';
-	let avatar = '';
+	let type = "bot";
+	let name = "";
+	let main = "";
+	let avatar = "";
 	let ram = config.defaults.minRam.bot;
 	let autorestart = false;
-	let version = '';
-	let selectedApts = ['tools'];
+	let version = "";
+	let selectedApts = ["tools"];
 	let availableVersions = [];
-	let id = '';
-	let language = '';
+	let id = "";
+	let language = "";
 
 	// Config preview
 	let copyButtonText = $t.discloudConfig.form.copyButton;
 
 	// Error/Warning messages for form fields
-	let idError = '';
+	let idError = "";
 	let showIdWarning = false;
-	let nameError = '';
-	let mainFileError = '';
-	let avatarError = '';
+	let nameError = "";
+	let mainFileError = "";
+	let avatarError = "";
 	let showRamError = false;
 
 	// Constants from config file
@@ -34,7 +34,10 @@
 
 	// Handle type change
 	function handleTypeChange() {
-		const minRam = type === 'site' ? config.defaults.minRam.site : config.defaults.minRam.bot;
+		const minRam =
+			type === "site"
+				? config.defaults.minRam.site
+				: config.defaults.minRam.bot;
 		ram = minRam;
 		showRamError = false;
 	}
@@ -44,9 +47,9 @@
 		id = id.trim();
 
 		// Check if ".discloud.app" is included in the ID
-		if (id.toLowerCase().includes('.discloud.app')) {
+		if (id.toLowerCase().includes(".discloud.app")) {
 			// Remove ".discloud.app" from the ID
-			id = id.toLowerCase().replace('.discloud.app', '').trim();
+			id = id.toLowerCase().replace(".discloud.app", "").trim();
 			showIdWarning = true; // Show warning message
 
 			setTimeout(() => {
@@ -62,21 +65,21 @@
 		if (!name) {
 			nameError = $t.discloudConfig.form.appName.error;
 		} else {
-			nameError = '';
+			nameError = "";
 		}
 	}
 
 	// Validate main file based on language requirements
 	function validateMainFile() {
-		const ext = main.slice(main.lastIndexOf('.'));
-		language = fileExtensions[ext] || '';
-		mainFileError = '';
+		const ext = main.slice(main.lastIndexOf("."));
+		language = fileExtensions[ext] || "";
+		mainFileError = "";
 
-		if (ext === '.java') {
+		if (ext === ".java") {
 			mainFileError = $t.discloudConfig.form.appMain.error.javaJar;
-		} else if (language === 'java') {
+		} else if (language === "java") {
 			const jarFilePattern = /^[a-zA-Z0-9]+\.jar$/;
-			if (ext !== '.jar') {
+			if (ext !== ".jar") {
 				mainFileError = $t.discloudConfig.form.appMain.error.javaJar;
 			} else if (!jarFilePattern.test(main)) {
 				mainFileError = $t.discloudConfig.form.appMain.error.invalidJarName;
@@ -89,15 +92,18 @@
 	// Validate avatar URL
 	function validateAvatarUrl() {
 		avatarError =
-			avatar && !/^(https?:\/\/[^\s]+(\.png|\.jpg|\.jpeg)(\?.*)?)$/i.test(avatar)
+			avatar &&
+			!/^(https?:\/\/[^\s]+(\.png|\.jpg|\.jpeg)(\?.*)?)$/i.test(avatar)
 				? $t.discloudConfig.form.appAvatar.error
-				: '';
+				: "";
 	}
 
 	// Validate RAM field
 	function validateRam() {
 		showRamError =
-			type === 'site' ? ram < config.defaults.minRam.site : ram < config.defaults.minRam.bot;
+			type === "site"
+				? ram < config.defaults.minRam.site
+				: ram < config.defaults.minRam.bot;
 	}
 
 	// Set available versions based on detected language
@@ -106,7 +112,7 @@
 		if (language && availableVersions.length > 0) {
 			version = version || availableVersions[0]; // Set the first version as default
 		} else {
-			version = ''; // Reset version if language is invalid or not detected
+			version = ""; // Reset version if language is invalid or not detected
 		}
 	}
 
@@ -130,21 +136,21 @@
 		name ? `NAME=${name}` : null,
 		avatar && !avatarError ? `AVATAR=${avatar}` : null,
 		`TYPE=${type}`,
-		type === 'site' && id ? `ID=${id}` : null,
+		type === "site" && id ? `ID=${id}` : null,
 		main ? `MAIN=${main}` : null,
 		`RAM=${ram}`,
 		autorestart ? `AUTORESTART=true` : null,
 		version && language ? `VERSION=${version}` : null,
-		selectedApts.length ? `APT=${selectedApts.join(', ')}` : null
+		selectedApts.length ? `APT=${selectedApts.join(", ")}` : null,
 	]
 		.filter((line) => line !== null)
-		.join('\n');
+		.join("\n");
 	// Download discloud.config file
 	function downloadConfig() {
-		const blob = new Blob([configPreview], { type: 'text/plain' });
-		const link = document.createElement('a');
+		const blob = new Blob([configPreview], { type: "text/plain" });
+		const link = document.createElement("a");
 		link.href = URL.createObjectURL(blob);
-		link.download = 'discloud.config';
+		link.download = "discloud.config";
 		link.click();
 		URL.revokeObjectURL(link.href);
 
@@ -155,7 +161,7 @@
 		name &&
 		main &&
 		ram >= 100 &&
-		(type === 'bot' || (type === 'site' && id && !idError)) &&
+		(type === "bot" || (type === "site" && id && !idError)) &&
 		!mainFileError &&
 		!avatarError;
 
@@ -170,13 +176,19 @@
 		navigator.clipboard.writeText(configPreview).then(
 			() => {
 				copyButtonText = $t.discloudConfig.form.copySuccess;
-				setTimeout(() => (copyButtonText = $t.discloudConfig.form.copyButton), 2000);
+				setTimeout(
+					() => (copyButtonText = $t.discloudConfig.form.copyButton),
+					2000,
+				);
 			},
 			(err) => {
 				copyButtonText = $t.discloudConfig.form.copyError;
-				console.error('Erro ao copiar conteúdo:', err);
-				setTimeout(() => (copyButtonText = $t.discloudConfig.form.copyButton), 2000);
-			}
+				console.error("Erro ao copiar conteúdo:", err);
+				setTimeout(
+					() => (copyButtonText = $t.discloudConfig.form.copyButton),
+					2000,
+				);
+			},
 		);
 	}
 </script>
@@ -197,15 +209,22 @@
 	<meta property="og:type" content="article" />
 </svelte:head>
 
-<h1 class="mb-4 text-center text-3xl font-bold text-[#57f287]">{$t.discloudConfig.header.title}</h1>
-<div class="flex flex-wrap items-center justify-center bg-[#0b0b0b] p-4 text-white">
+<h1 class="mb-4 text-center text-3xl font-bold text-[#57f287]">
+	{$t.discloudConfig.header.title}
+</h1>
+<div
+	class="flex flex-wrap items-center justify-center bg-[#0b0b0b] p-4 text-white"
+>
 	<div class="flex w-full max-w-6xl flex-col gap-6 md:flex-row">
 		<form
 			on:submit={handleSubmit}
 			class="w-full rounded-lg bg-[#1c1c1c] p-6 shadow-lg md:w-[750px]"
 		>
 			<div class="mb-4">
-				<label for="appType" class="mb-2 block text-sm font-semibold text-gray-300">
+				<label
+					for="appType"
+					class="mb-2 block text-sm font-semibold text-gray-300"
+				>
 					{$t.discloudConfig.form.appType.label}
 				</label>
 				<select
@@ -215,15 +234,21 @@
 					class="w-full rounded-md border border-gray-600 bg-[#0b0b0b] px-4 py-2 text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#57f287] focus:ring-opacity-50"
 				>
 					{#each appTypes as appType}
-						<option value={appType}>{appType.charAt(0).toUpperCase() + appType.slice(1)}</option>
+						<option value={appType}
+							>{appType.charAt(0).toUpperCase() + appType.slice(1)}</option
+						>
 					{/each}
 				</select>
 			</div>
 
-			{#if type === 'site'}
+			{#if type === "site"}
 				<div class="mb-4">
-					<label for="appId" class="mb-2 block text-sm font-semibold text-gray-300">
-						{$t.discloudConfig.form.appId.label}<span class="text-[#fee75c]>*"></span>
+					<label
+						for="appId"
+						class="mb-2 block text-sm font-semibold text-gray-300"
+					>
+						{$t.discloudConfig.form.appId.label}<span class="text-[#fee75c]>*"
+						></span>
 					</label>
 					<input
 						type="text"
@@ -234,7 +259,9 @@
 						class="w-full rounded-md border border-gray-600 bg-[#0b0b0b] px-4 py-2 text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#57f287] focus:ring-opacity-50"
 					/>
 					{#if idError}
-						<p class="mt-1 text-sm text-red-500">{$t.discloudConfig.form.appId.error}</p>
+						<p class="mt-1 text-sm text-red-500">
+							{$t.discloudConfig.form.appId.error}
+						</p>
 					{/if}
 					{#if showIdWarning}
 						<p class="mt-1 text-sm text-yellow-500">
@@ -245,8 +272,13 @@
 			{/if}
 
 			<div class="mb-4">
-				<label for="appName" class="mb-2 block text-sm font-semibold text-gray-300">
-					{$t.discloudConfig.form.appName.label}<span class="text-[#fee75c]">*</span>
+				<label
+					for="appName"
+					class="mb-2 block text-sm font-semibold text-gray-300"
+				>
+					{$t.discloudConfig.form.appName.label}<span class="text-[#fee75c]"
+						>*</span
+					>
 				</label>
 				<input
 					type="text"
@@ -262,8 +294,13 @@
 			</div>
 
 			<div class="mb-4">
-				<label for="appMain" class="mb-2 block text-sm font-semibold text-gray-300">
-					{$t.discloudConfig.form.appMain.label}<span class="text-[#fee75c]">*</span>
+				<label
+					for="appMain"
+					class="mb-2 block text-sm font-semibold text-gray-300"
+				>
+					{$t.discloudConfig.form.appMain.label}<span class="text-[#fee75c]"
+						>*</span
+					>
 				</label>
 				<input
 					type="text"
@@ -293,7 +330,11 @@
 							fill="#000000"
 						>
 							<g id="SVGRepo_bgCarrier" stroke-width="0" />
-							<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+							<g
+								id="SVGRepo_tracerCarrier"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/>
 							<g id="SVGRepo_iconCarrier">
 								<path
 									style="fill:#fee75c;"
@@ -308,7 +349,12 @@
 									d="M263.601,480.47c-26.708-2.915-52.062-10.291-75.34-21.356l-15.092,7.815 c18.026,6.756,37.091,11.378,56.902,13.541c8.512,0.941,17.165,1.419,25.934,1.419c5.665,0,11.28-0.213,16.846-0.605 C269.753,481.066,266.664,480.809,263.601,480.47z"
 								/>
 								<g>
-									<circle style="fill:#E6E6E6;" cx="256.004" cy="121.921" r="41.539" />
+									<circle
+										style="fill:#E6E6E6;"
+										cx="256.004"
+										cy="121.921"
+										r="41.539"
+									/>
 									<polygon
 										style="fill:#E6E6E6;"
 										points="292.072,367.413 292.072,231.291 292.072,199.148 219.929,199.148 199.244,199.148 199.244,231.291 219.929,231.291 219.929,367.413 199.244,367.413 199.244,399.555 219.929,399.555 292.072,399.555 312.758,399.555 312.758,367.413 "
@@ -343,7 +389,10 @@
 									{$t.discloudConfig.form.appMain.examples.title}
 									{#each $t.discloudConfig.form.appMain.examples.list as example, index}
 										<span class="text-[#fee75c]">{example}</span>
-										{index < $t.discloudConfig.form.appMain.examples.list.length - 1 ? ', ' : ''}
+										{index <
+										$t.discloudConfig.form.appMain.examples.list.length - 1
+											? ", "
+											: ""}
 									{/each}
 								</li>
 								<li>
@@ -361,7 +410,10 @@
 			</div>
 
 			<div class="mb-4">
-				<label for="appAvatar" class="mb-2 block text-sm font-semibold text-gray-300">
+				<label
+					for="appAvatar"
+					class="mb-2 block text-sm font-semibold text-gray-300"
+				>
 					{$t.discloudConfig.form.appAvatar.label}
 				</label>
 				<input
@@ -380,7 +432,10 @@
 			<div class="mb-4 flex items-start space-x-6">
 				<!-- Campo de RAM -->
 				<div class="flex-1">
-					<label for="appRam" class="mb-2 block text-sm font-semibold text-gray-300">
+					<label
+						for="appRam"
+						class="mb-2 block text-sm font-semibold text-gray-300"
+					>
 						{$t.discloudConfig.form.appRam.label}
 					</label>
 					<input
@@ -393,16 +448,19 @@
 					/>
 					{#if showRamError}
 						<p class="mt-1 text-sm text-red-500">
-							{type === 'site'
-								? `${$t.discloudConfig.form.appRam.error.site.replace('{minRamSite}', config.defaults.minRam.site)}`
-								: `${$t.discloudConfig.form.appRam.error.bot.replace('{minRamBot}', config.defaults.minRam.bot)}`}
+							{type === "site"
+								? `${$t.discloudConfig.form.appRam.error.site.replace("{minRamSite}", config.defaults.minRam.site)}`
+								: `${$t.discloudConfig.form.appRam.error.bot.replace("{minRamBot}", config.defaults.minRam.bot)}`}
 						</p>
 					{/if}
 				</div>
 
 				<!-- Autorestart Button -->
 				<div class="flex-1">
-					<label for="autorestart" class="block text-sm font-semibold text-gray-300">
+					<label
+						for="autorestart"
+						class="block text-sm font-semibold text-gray-300"
+					>
 						{$t.discloudConfig.form.autorestart.label}
 					</label>
 					<div class="mt-2 flex flex-col items-start">
@@ -412,8 +470,8 @@
 							on:click={() => (autorestart = !autorestart)}
 							class={`flex w-full items-center justify-center rounded-md px-4 py-2 text-base font-semibold transition duration-300 ${
 								autorestart
-									? 'bg-[#57f287] text-black hover:bg-[#3ba459]'
-									: 'bg-[#ed4245] text-white hover:bg-[#c92a2f]'
+									? "bg-[#57f287] text-black hover:bg-[#3ba459]"
+									: "bg-[#ed4245] text-white hover:bg-[#c92a2f]"
 							}`}
 						>
 							{autorestart
@@ -436,7 +494,10 @@
 			</div>
 
 			<div class="mb-4">
-				<label for="appVersion" class="mb-2 block text-sm font-semibold text-gray-300">
+				<label
+					for="appVersion"
+					class="mb-2 block text-sm font-semibold text-gray-300"
+				>
 					{$t.discloudConfig.form.appVersion.label}
 				</label>
 				<select
@@ -444,7 +505,7 @@
 					bind:value={version}
 					disabled={!main || mainFileError}
 					class={`w-full rounded-md border border-gray-600 bg-[#0b0b0b] px-4 py-2 text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#57f287] focus:ring-opacity-50 ${
-						!mainFileError ? 'cursor-pointer' : 'cursor-default'
+						!mainFileError ? "cursor-pointer" : "cursor-default"
 					}" `}
 				>
 					{#if !main}
@@ -464,7 +525,10 @@
 			</div>
 
 			<div class="mb-12">
-				<label for="appApts" class="mb-2 block text-sm font-semibold text-gray-300">
+				<label
+					for="appApts"
+					class="mb-2 block text-sm font-semibold text-gray-300"
+				>
 					{$t.discloudConfig.form.appApts.label}
 				</label>
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -478,8 +542,8 @@
 								on:click={() => toggleApt(apt.name)}
 								class={`flex w-full items-center justify-center rounded-md px-2 py-2 text-xs font-semibold transition duration-300 md:px-4 md:py-2 md:text-sm ${
 									selectedApts.includes(apt.name.toLowerCase())
-										? 'bg-[#57f287] text-black hover:bg-[#3ba459]'
-										: 'bg-[#ed4245] text-white hover:bg-[#c92a2f]'
+										? "bg-[#57f287] text-black hover:bg-[#3ba459]"
+										: "bg-[#ed4245] text-white hover:bg-[#c92a2f]"
 								}`}
 							>
 								{apt.name}
@@ -503,10 +567,19 @@
 										fill="#000000"
 									>
 										<g id="SVGRepo_bgCarrier" stroke-width="0" />
-										<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+										<g
+											id="SVGRepo_tracerCarrier"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/>
 										<g id="SVGRepo_iconCarrier">
 											<g>
-												<circle style="fill:#57f287;" cx="256" cy="81.293" r="73.034" />
+												<circle
+													style="fill:#57f287;"
+													cx="256"
+													cy="81.293"
+													r="73.034"
+												/>
 												<path
 													style="fill:#57f287;"
 													d="M356.012,231.76v-44.394H155.988v44.394c14.899,0,26.975,12.077,26.975,26.974v173.638 c0,14.898-12.078,26.975-26.975,26.975v44.394h200.025v-44.393c-14.899,0-26.975-12.078-26.975-26.975v-173.64 C329.037,243.836,341.114,231.76,356.012,231.76z"
@@ -543,8 +616,8 @@
 				disabled={!isFormValid}
 				class={`w-full rounded-md px-4 py-2 text-sm font-semibold transition duration-300 ${
 					isFormValid
-						? 'bg-[#57f287] text-black hover:bg-[#3ba459]'
-						: 'cursor-not-allowed bg-[#ed4245] text-white opacity-50'
+						? "bg-[#57f287] text-black hover:bg-[#3ba459]"
+						: "cursor-not-allowed bg-[#ed4245] text-white opacity-50"
 				}`}
 			>
 				{$t.discloudConfig.form.downloadButton}
@@ -556,7 +629,9 @@
 			class="w-full flex-1 rounded-lg bg-[#1c1c1c] p-6 shadow-lg md:sticky md:top-4 md:w-auto"
 			style="height: fit-content;"
 		>
-			<div class="overflow-hidden rounded-lg border border-gray-600 bg-[#0b0b0b] shadow-lg">
+			<div
+				class="overflow-hidden rounded-lg border border-gray-600 bg-[#0b0b0b] shadow-lg"
+			>
 				<div class="flex items-center justify-between bg-[#1c1c1c] p-2">
 					<div class="flex items-center space-x-2">
 						<div class="h-3 w-3 rounded-full bg-red-500"></div>
@@ -578,7 +653,8 @@
 				</div>
 
 				<div class="overflow-auto p-4 text-sm text-gray-300">
-					<pre>{configPreview}</pre>
+					<pre
+						class="whitespace-pre-wrap break-words word-break break-all">{configPreview}</pre>
 				</div>
 			</div>
 		</div>
