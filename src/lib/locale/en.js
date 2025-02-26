@@ -8,7 +8,9 @@ export default {
   },
   footer: {
     allRightsReserved: 'All rights reserved',
-    info: 'This website is not affiliated with',
+    info: 'This site is not officially affiliated with',
+    contributors: 'Contributors',
+    loadingContributors: 'Loading contributors...',
   },
   landing: {
     welcome: {

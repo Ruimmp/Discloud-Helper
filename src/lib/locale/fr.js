@@ -9,6 +9,8 @@ export default {
   footer: {
     allRightsReserved: 'Tous droits réservés',
     info: "Ce site n'est pas affilié officiellement à",
+    contributors: 'Contributeurs',
+    loadingContributors: 'Chargement des contributeurs...',
   },
   landing: {
     welcome: {
