@@ -1,36 +1,59 @@
 import { writable, derived } from 'svelte/store';
 
-// Supported languages
-export const supportedLanguages = ['English', 'Português', 'Français'];
-
 // Import translations dynamically
 import en from '$lib/locale/en.js';
 import pt from '$lib/locale/pt.js';
 import fr from '$lib/locale/fr.js';
 
 const translations = {
-	English: en,
-	Português: pt,
-	Français: fr
+  en,
+  pt,
+  fr,
 };
 
-// Load user preference from localStorage or fallback to default
-const userLanguage =
-	typeof localStorage !== 'undefined' ? localStorage.getItem('language') || 'English' : 'English';
+export const langFlags = {
+  en: '🇬🇧',
+  pt: '🇵🇹',
+  fr: '🇫🇷',
+};
+
+export const supportedLanguages = Object.entries(translations).map(
+  ([key, lang]) => ({
+    key,
+    name: lang.name,
+  })
+);
+
+function getUserLanguage() {
+  if (
+    typeof localStorage !== 'undefined' &&
+    localStorage.getItem('language') in translations
+  ) {
+    return localStorage.getItem('language');
+  } else if (
+    typeof navigator !== 'undefined' &&
+    typeof navigator.language == 'string'
+  ) {
+    console.log(navigator.language);
+    const navigatorLanguage = navigator.language.split('-')[0];
+    return navigatorLanguage in translations ? navigatorLanguage : 'en';
+  }
+
+  return 'en';
+}
 
 // Default language
-const defaultLanguage = supportedLanguages.includes(userLanguage) ? userLanguage : 'English'; // Validate the stored language
-export const language = writable(defaultLanguage);
+export const language = writable(getUserLanguage());
 
 // Save language changes to localStorage
 language.subscribe((value) => {
-	if (typeof localStorage !== 'undefined') {
-		localStorage.setItem('language', value);
-	}
+  if (typeof localStorage !== 'undefined') {
+    localStorage.setItem('language', value);
+  }
 });
 
 // Derive the current translations based on the selected language
 export const t = derived(language, ($language) => {
-	// If the selected language is not supported, fallback to the default language
-	return translations[$language] || translations['English'];
+  // If the selected language is not supported, fallback to the default language
+  return translations[$language] || translations['en'];
 });
