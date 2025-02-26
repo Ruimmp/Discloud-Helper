@@ -4,32 +4,32 @@
 
 /* Scrollbar Customization */
 ::-webkit-scrollbar {
-	width: 10px;
-	height: 10px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-	/* Default */
-	background: var(--scrollbar-thumb, #57f287);
-	/* Controlled by JavaScript */
-	border-radius: var(--scrollbar-radius, 8px);
+  /* Default */
+  background: var(--scrollbar-thumb, #57f287);
+  /* Controlled by JavaScript */
+  border-radius: var(--scrollbar-radius, 8px);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background: var(--scrollbar-thumb-hover, #91f8b2);
-	cursor: pointer;
+  background: var(--scrollbar-thumb-hover, #91f8b2);
+  cursor: pointer;
 }
 
 /* Theme-specific colors */
 html {
-	--scrollbar-thumb: #57f287;
-	--scrollbar-thumb-hover: #389b57;
+  --scrollbar-thumb: #57f287;
+  --scrollbar-thumb-hover: #389b57;
 }
 
 /* Theme-specific body background */
 html {
-	--tw-bg-opacity: 1;
-	/* Dark Background */
-	background-color: #0b0b0b;
-	color: white;
+  --tw-bg-opacity: 1;
+  /* Dark Background */
+  background-color: #0b0b0b;
+  color: white;
 }

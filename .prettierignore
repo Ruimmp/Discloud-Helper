@@ -1,0 +1,13 @@
+.github/
+.svelte-kit/
+build/
+static/
+.discloudignore
+.gitignore
+.npmrc
+package.json
+postcss.config.js
+README.md
+svelte.config.js
+tailwind.config.js
+vite.config.js
